@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Александра Васильева](https://up.htmlacademy.ru/javascript/19/user/1156713).
-* Наставник: `Неизвестно`.
+* Наставник: [Артем Зрилов](https://htmlacademy.ru/profile/id1045563).
 
 ---
 
