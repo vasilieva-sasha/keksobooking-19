@@ -2,17 +2,17 @@
 
 (function () {
 
-  // var MAP_WIDTH = 1200;
-  // var MAP_HEIGHT_MIN = 130;
-  // var MAP_HEIGHT_MAX = 630;
+  var MAP_WIDTH = 1200;
+  var MAP_HEIGHT_MIN = 130;
+  var MAP_HEIGHT_MAX = 630;
+  var PIN_WIDTH = 40;
+  var PIN_HEIGHT = 70;
   var TYPE = ['palace', 'flat', 'house', 'bungalo'];
   var ROOMS = [1, 2, 3, 100];
   var CHECKIN = ['12:00', '13:00', '14:00'];
   var CHECKOUT = ['12:00', '13:00', '14:00'];
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-  // var AUTOR = {};
-  // var OFFER = {};
-  // var LOCATION = {};
+  var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
   var ad = {};
   var ADS = [];
 
@@ -23,6 +23,19 @@
       var avatarUrl = 'img/avatars/user0' + i + '.png';
     }
     return avatarUrl;
+  };
+
+  var getLocationX = function () {
+    return Math.floor(Math.random() * MAP_WIDTH);
+  };
+
+  var getLocationY = function () {
+    return Math.floor(Math.random() * (MAP_HEIGHT_MAX - MAP_HEIGHT_MIN) + MAP_HEIGHT_MIN);
+  };
+
+  var getRandomArray = function (array) {
+    var randomArray = array.slice(0, Math.floor(Math.random() * array.length));
+    return randomArray;
   };
 
   var createObjectAd = function () {
@@ -48,20 +61,20 @@
       },
       offer: {
         title: 'Заголовок предложения',
-        address: 'x, y', // сделать функцию?
+        address: location.x + ',' + location.y,
         price: 'стоимость',
         type: TYPE[Math.floor(Math.random() * TYPE.length)],
         rooms: roomsAmount,
         guests: getGuestsAmount(),
         checkin: CHECKIN[Math.floor(Math.random() * CHECKIN.length)],
         checkout: CHECKOUT[Math.floor(Math.random() * CHECKOUT.length)],
-        features: FEATURES, // написать функцию которая рандомно возрвщает несколько элементов массива
+        features: getRandomArray(FEATURES),
         description: 'описание',
-        photos: ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg']
+        photos: getRandomArray(PHOTOS)
       },
       location: {
-        x: 'function()',
-        y: 'function()',
+        x: getLocationX(),
+        y: getLocationY(),
       }
     };
     return ad;
@@ -74,77 +87,36 @@
     }
   };
   createArrayAds();
-  console.log(ADS);
 
-  // var avatar = renderAvatarUrl();
-  // var title = 'Заголовок предложения';
-  // var address = 'x, y'; // сделать функцию?
-  // var price = 'стоимость';
-  // var guests = 'number';
-  // var description = 'описание';
-  // var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-  // var x = 'function()';
-  // var y = 'function()';
+  var getLocationPinX = function () {
+    var locationPinX = getLocationX() + (PIN_WIDTH / 2);
+    return locationPinX + 'px';
+  };
 
-  // var createObjectAutor = function () {
-  //   AUTOR.avatar = avatar;
-  // };
+  var getLocationPinY = function () {
+    var locationPinY = getLocationY() + PIN_HEIGHT;
+    return locationPinY + 'px';
+  };
 
-  // var createObjectOffer = function () {
-  //   OFFER.title = title;
-  //   OFFER.address = address;
-  //   OFFER.price = price;
-  //   OFFER.TYPE = TYPE;
-  //   OFFER.ROOMS = ROOMS;
-  //   OFFER.guests = guests;
-  //   OFFER.CHECKIN = CHECKIN;
-  //   OFFER.CHECKOUT = CHECKOUT;
-  //   OFFER.FEATURES = FEATURES;
-  //   OFFER.description = description;
-  //   OFFER.photos = photos;
-  // };
+  document.querySelector('.map').classList.remove('map--faded');
 
-  // var createObjectLocation = function () {
-  //   LOCATION.x = x;
-  //   LOCATION.y = y;
-  // };
+  var mapWithAds = document.querySelector('.map__pins');
 
-  // var createObjectAd = function () {
-  //   AD.AUTOR = AUTOR;
-  //   AD.OFFER = OFFER;
-  //   AD.LOCATION = LOCATION;
-  // };
+  var similarPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
-  // var createArrayAds = function () {
-  //   createObjectAutor();
-  //   createObjectOffer();
-  //   createObjectLocation();
-  //   for (var i = 0; i < adsAmount; i++) {
-  //     createObjectAd();
-  //     ADS.push(AD);
-  //   }
-  // };
+  var renderPins = function () {
+    var pin = similarPinTemplate.cloneNode(true);
+    pin.style.left = getLocationPinX();
+    pin.style.top = getLocationPinY();
+    pin.querySelector('img').src = ad.autor.avatar;
+    pin.querySelector('img').alt = ad.offer.title;
+    return pin;
+  };
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < ADS.length; i++) {
+    fragment.appendChild(renderPins());
+  }
 
-  // createArrayAds();
-  // console.log(AUTOR, OFFER, LOCATION, AD, ADS);
+  mapWithAds.appendChild(fragment);
 
-  // var similarPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-  // var similarAdTemplate = document.querySelector('#card').content.querySelector('.map__card');
-  // var mapWithAds = document.querySelector('.map__pins');
-
-  // var renderAds = function (arr) {
-  //   var ad = similarAdTemplate.cloneNode(true);
-  //   var pin = similarPinTemplate.cloneNode(true);
-  //   // pin.querySelector('img').src = arr.avatar;
-  //   // ad.querySelector('.popup__title').textContent = arr.title;
-  //   return pin;
-  // };
-
-  // document.querySelector('.map').classList.remove('map--faded');
-  // var fragment = document.createDocumentFragment();
-  // for (var i = 0; i < ADS.length; i++) {
-  //   fragment.appendChild(renderAds());
-  // }
-
-  // mapWithAds.appendChild(fragment);
 })();
