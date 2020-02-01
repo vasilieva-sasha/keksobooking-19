@@ -19,8 +19,8 @@
   var adsAmount = 8;
 
   var renderAvatarUrl = function () {
-    for (var i = 1; i <= adsAmount; i++) {
-      var avatarUrl = 'img/avatars/user0' + i + '.png';
+    for (var i = 0; i < adsAmount; i++) {
+      var avatarUrl = 'img/avatars/user0' + (i + 1) + '.png';
     }
     return avatarUrl;
   };
@@ -38,7 +38,7 @@
     return randomArray;
   };
 
-  var createObjectAd = function () {
+  var createObjectAd = function (i) {
     var roomsAmount = ROOMS[Math.floor(Math.random() * ROOMS.length)];
     var getGuestsAmount = function () {
       var guestsAmount;
@@ -57,7 +57,7 @@
 
     ad = {
       autor: {
-        avatar: renderAvatarUrl() // 'img/avatars/user0' +  + '.png'
+        avatar: renderAvatarUrl(i)
       },
       offer: {
         title: 'Заголовок предложения',
@@ -82,7 +82,7 @@
 
   var createArrayAds = function () {
     for (var i = 0; i < adsAmount; i++) {
-      createObjectAd();
+      createObjectAd(i);
       ADS.push(ad);
     }
   };
