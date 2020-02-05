@@ -163,12 +163,18 @@
     }
   });
 
-  adFormSubmitButton.addEventListener('submit', function () {
-    if (adFormSelectRooms.value === 1) {
-      if (adFormSelectCapacity.selectedIndex === 3) {
-        adFormSelectCapacity.setCustomValidity('1 комната — для 1 гостя');
-      }
+  var checkValidity = function () {
+    if (adFormSelectRooms.value < adFormSelectCapacity.value) {
+      adFormSelectCapacity.setCustomValidity('слишком много гостей!');
     }
+  };
+
+  // checkValidity();
+
+  adFormSelectCapacity.addEventListener('change', function () {
+
+    checkValidity();
+
   });
 
 })();
