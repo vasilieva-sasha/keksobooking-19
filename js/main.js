@@ -27,7 +27,6 @@
   var adFormInputAddress = adForm.querySelector('input[name=address]');
   var adFormSelectRooms = adForm.querySelector('select[name=rooms]');
   var adFormSelectCapacity = adForm.querySelector('select[name=capacity]');
-  var adFormSubmitButton = adForm.querySelector('.ad-form__submit');
 
   var onWindowLoad = function (collection) {
     window.onLoad = collection.forEach(function (collectionItem) {
@@ -114,7 +113,8 @@
   };
 
   var onPinMainClick = function () {
-    map.classList.remove('map--faded'); // добавить проверку левой кнопки мыши
+    checkValidity();
+    map.classList.remove('map--faded');
     mapWithAds.appendChild(fragment);
     adForm.classList.remove('ad-form--disabled');
     adFormInputs.forEach(function (input) {
@@ -153,8 +153,10 @@
 
   adFormInputAddress.value = getMainPinAddress();
 
-  pinMain.addEventListener('mousedown', function () {
-    onPinMainClick();
+  pinMain.addEventListener('mousedown', function (evt) {
+    if (evt.which === 1) {
+      onPinMainClick();
+    }
   });
 
   pinMain.addEventListener('keydown', function (evt) {
@@ -164,17 +166,19 @@
   });
 
   var checkValidity = function () {
-    if (adFormSelectRooms.value < adFormSelectCapacity.value) {
-      adFormSelectCapacity.setCustomValidity('слишком много гостей!');
+    if (adFormSelectCapacity.value === '0' && adFormSelectRooms.value !== '100') {
+      adFormSelectCapacity.setCustomValidity('Выберите количество гостей!');
+    } else if (adFormSelectRooms.value === '100' && adFormSelectCapacity.value !== '0') {
+      adFormSelectCapacity.setCustomValidity('Размещение гостей невозможно!');
+    } else if (adFormSelectRooms.value < adFormSelectCapacity.value) {
+      adFormSelectCapacity.setCustomValidity('Слишком много гостей!');
+    } else {
+      adFormSelectCapacity.setCustomValidity('');
     }
   };
 
-  // checkValidity();
-
-  adFormSelectCapacity.addEventListener('change', function () {
-
+  adForm.addEventListener('change', function () {
     checkValidity();
-
   });
 
 })();
