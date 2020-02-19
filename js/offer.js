@@ -34,7 +34,7 @@
   var renderCard = function (adItem) {
     var card = cardTemplate.cloneNode(true);
     var cardPhotos = card.querySelector('.popup__photos');
-    var photo = card.querySelector('.popup__photo');
+    var cardPhoto = card.querySelector('.popup__photo');
     var cardFeaturesCollection = card.querySelectorAll('.popup__feature');
     var cardFeatures = card.querySelector('.popup__features');
 
@@ -52,13 +52,13 @@
     }
 
     card.querySelector('.popup__description').textContent = adItem.offer.description;
-    photo.src = adItem.offer.photos[0];
+    cardPhoto.src = adItem.offer.photos[0];
 
     if (adItem.offer.photos.length === 0) {
-      cardPhotos.removeChild(photo);
+      cardPhotos.removeChild(cardPhoto);
     } else if (adItem.offer.photos.length > 1) {
       for (var i = 1; i < adItem.offer.photos.length; i++) {
-        var clonedPhoto = photo.cloneNode(true);
+        var clonedPhoto = cardPhoto.cloneNode(true);
         cardPhotos.appendChild(clonedPhoto);
         clonedPhoto.src = adItem.offer.photos[i];
       }
