@@ -69,6 +69,16 @@
     return card;
   };
 
-  window.map.block.insertBefore(renderCard(window.data.ads[0]), mapFilters);
+  var showCard = function () {
+    window.map.block.insertBefore(renderCard(window.data.ads[0]), mapFilters);
+  };
+
+  window.pin.tool.addEventListener('mousedown', function (evt) {
+    window.util.isLeftMouseEvent(evt, showCard());
+  });
+
+  window.pin.tool.addEventListener('keydown', function (evt) {
+    window.util.isEnterEvent(evt, showCard());
+  });
 
 })();
