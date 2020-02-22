@@ -36,7 +36,7 @@
       } else if (roomsAmount === 3) {
         guestsAmount = 3;
       } else if (roomsAmount === 100) {
-        guestsAmount = 'Не для гостей';
+        guestsAmount = ' не для гостей';
       }
       return guestsAmount;
     };
