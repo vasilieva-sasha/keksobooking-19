@@ -30,6 +30,7 @@
 
   var renderPins = function (adItem) {
     var pin = similarPinTemplate.cloneNode(true);
+    pin.classList.add('map__pin--card');
     pin.style.left = getLocationPinX(adItem);
     pin.style.top = getLocationPinY(adItem);
     pin.querySelector('img').src = adItem.autor.avatar;
