@@ -86,6 +86,10 @@
   };
 
   var showCard = function (adItem) {
+    var oldCard = document.querySelector('.popup--ad');
+    if (oldCard) {
+      oldCard.remove();
+    }
     window.map.block.insertBefore(completeCard(adItem), mapFilters);
   };
 
