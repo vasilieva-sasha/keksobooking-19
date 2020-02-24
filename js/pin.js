@@ -39,7 +39,10 @@
   };
 
   var appendPins = function (adItem) {
-    fragment.appendChild(renderPins(adItem));
+    var pin = fragment.appendChild(renderPins(adItem));
+    pin.addEventListener('click', function () {
+      window.offer.showCard(adItem);
+    });
   };
 
   window.data.ads.forEach(function (adItem) {
