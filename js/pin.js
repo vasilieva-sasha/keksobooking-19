@@ -29,13 +29,13 @@
   };
 
   var renderPins = function (adItem) {
-    var pin = similarPinTemplate.cloneNode(true);
-    pin.classList.add('map__pin--card');
-    pin.style.left = getLocationPinX(adItem);
-    pin.style.top = getLocationPinY(adItem);
-    pin.querySelector('img').src = adItem.autor.avatar;
-    pin.querySelector('img').alt = adItem.offer.title;
-    return pin;
+    var clonedPin = similarPinTemplate.cloneNode(true);
+    clonedPin.classList.add('map__pin--card');
+    clonedPin.style.left = getLocationPinX(adItem);
+    clonedPin.style.top = getLocationPinY(adItem);
+    clonedPin.querySelector('img').src = adItem.autor.avatar;
+    clonedPin.querySelector('img').alt = adItem.offer.title;
+    return clonedPin;
   };
 
   var appendPins = function (adItem) {
@@ -57,18 +57,15 @@
     window.util.isEnterEvent(evt, onPinMainClick());
   });
 
-  var mainPinAddress;
-  var getMainPinAddress = function () {
-    var pinMainX = parseInt(pinMain.style.left, 10) + (MAIN_PIN_WIDTH / 2);
-    var pinMainY = parseInt(pinMain.style.top, 10) + MAIN_PIN_HEIGHT;
-    mainPinAddress = pinMainX + ', ' + pinMainY;
-  };
-
-  getMainPinAddress();
-
   window.pin = {
-    mainPinAddress: mainPinAddress,
-    tool: pinMain
+    MAIN_WIDTH: MAIN_PIN_WIDTH,
+    MAIN_HEIGHT: MAIN_PIN_HEIGHT,
+    tool: pinMain,
+    mainPinAddress: function () {
+      var pinMainX = parseInt(this.tool.style.left, 10) + (MAIN_PIN_WIDTH / 2);
+      var pinMainY = parseInt(this.tool.style.top, 10) + MAIN_PIN_HEIGHT;
+      return pinMainX + ', ' + pinMainY;
+    }
   };
 
 })();
