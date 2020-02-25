@@ -5,6 +5,10 @@
   var adFormInputAddress = document.querySelector('input[name=address]');
 
   window.pin.tool.addEventListener('mousedown', function (evt) {
+    window.util.isLeftMouseEvent(evt, dragPin(evt));
+  });
+
+  var dragPin = function (evt) {
     evt.preventDefault();
 
     var startCoords = {
@@ -51,5 +55,6 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
-  });
+  };
+
 })();
