@@ -114,11 +114,11 @@
   adFormInputAddress.value = window.pin.mainPinAddress;
 
   window.pin.tool.addEventListener('mousedown', function (evt) {
-    window.util.isLeftMouseEvent(evt, activateForm());
+    window.util.isLeftMouseEvent(evt, activateForm);
   });
 
   window.pin.tool.addEventListener('keydown', function (evt) {
-    window.util.isEnterEvent(evt, activateForm());
+    window.util.isEnterEvent(evt, activateForm);
   });
 
 })();

@@ -3,17 +3,16 @@
 (function () {
   var ENTER_KEY = 'Enter';
   var ESC_KEY = 'Escape';
+  var LEFT_MOUSE_BUTTON = 0;
 
   window.util = {
-    ENTER_KEY: ENTER_KEY,
-    ESC_KEY: ESC_KEY,
     isEnterEvent: function (evt, action) {
       if (evt.key === ENTER_KEY) {
         action();
       }
     },
     isLeftMouseEvent: function (evt, action) {
-      if (evt.wich === 1) {
+      if (evt.button === LEFT_MOUSE_BUTTON) {
         action();
       }
     },
