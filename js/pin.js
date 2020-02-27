@@ -50,11 +50,11 @@
   });
 
   pinMain.addEventListener('mousedown', function (evt) {
-    window.util.isLeftMouseEvent(evt, onPinMainClick());
+    window.util.isLeftMouseEvent(evt, onPinMainClick);
   });
 
   pinMain.addEventListener('keydown', function (evt) {
-    window.util.isEnterEvent(evt, onPinMainClick());
+    window.util.isEnterEvent(evt, onPinMainClick);
   });
 
   window.pin = {

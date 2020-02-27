@@ -5,7 +5,9 @@
   var adFormInputAddress = document.querySelector('input[name=address]');
 
   window.pin.tool.addEventListener('mousedown', function (evt) {
-    window.util.isLeftMouseEvent(evt, dragPin(evt));
+    window.util.isLeftMouseEvent(evt, function () {
+      dragPin(evt);
+    });
   });
 
   var dragPin = function (evt) {
