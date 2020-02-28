@@ -33,7 +33,7 @@
     clonedPin.classList.add('map__pin--card');
     clonedPin.style.left = getLocationPinX(adItem);
     clonedPin.style.top = getLocationPinY(adItem);
-    clonedPin.querySelector('img').src = adItem.autor.avatar;
+    clonedPin.querySelector('img').src = adItem.author.avatar;
     clonedPin.querySelector('img').alt = adItem.offer.title;
     return clonedPin;
   };
@@ -45,9 +45,23 @@
     });
   };
 
-  window.data.ads.forEach(function (adItem) {
-    appendPins(adItem);
-  });
+  var onSuccess = function (adverts) {
+    adverts.forEach(function (adItem) {
+      appendPins(adItem);
+    });
+  };
+
+  var onError = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '35px';
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+  window.get(onSuccess, onError);
 
   pinMain.addEventListener('mousedown', function (evt) {
     window.util.isLeftMouseEvent(evt, onPinMainClick);
