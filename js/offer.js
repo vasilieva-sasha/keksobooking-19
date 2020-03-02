@@ -24,10 +24,10 @@
   var getCorrectWordGuests = function (adItem) {
     if (adItem.offer.guests === 1) {
       return ' для ' + adItem.offer.guests + ' гостя';
-    } else if (adItem.offer.guests === 2 || adItem.offer.guests === 3) {
-      return ' для ' + adItem.offer.guests + ' гостей';
+    } else if (adItem.offer.guests === 0) {
+      return ' не для гостей';
     } else {
-      return adItem.offer.guests;
+      return ' для ' + adItem.offer.guests + ' гостей';
     }
   };
 
@@ -66,7 +66,7 @@
       }
     }
 
-    card.querySelector('.popup__avatar').src = adItem.autor.avatar;
+    card.querySelector('.popup__avatar').src = adItem.author.avatar;
 
     buttonClose.addEventListener('click', function () {
       removeCard();
