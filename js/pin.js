@@ -61,6 +61,7 @@
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
   };
+
   window.get(onSuccess, onError);
 
   pinMain.addEventListener('mousedown', function (evt) {
@@ -75,10 +76,15 @@
     MAIN_WIDTH: MAIN_PIN_WIDTH,
     MAIN_HEIGHT: MAIN_PIN_HEIGHT,
     tool: pinMain,
-    mainPinAddress: function () {
+    append: appendPins,
+    toolAddress: function () {
       var pinMainX = parseInt(this.tool.style.left, 10) + (MAIN_PIN_WIDTH / 2);
       var pinMainY = parseInt(this.tool.style.top, 10) + MAIN_PIN_HEIGHT;
       return pinMainX + ', ' + pinMainY;
+    },
+    onToolClick: function () {
+      window.map.block.classList.remove('map--faded');
+      mapWithAds.appendChild(fragment);
     }
   };
 

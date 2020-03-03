@@ -45,7 +45,7 @@
       var top = checkOffset(window.pin.tool.offsetTop, window.map.HEIGHT_MIN, window.map.HEIGHT_MAX, window.pin.MAIN_HEIGHT) - shift.y;
       window.pin.tool.style.top = top + 'px';
       window.pin.tool.style.left = left + 'px';
-      adFormInputAddress.value = window.pin.mainPinAddress();
+      adFormInputAddress.value = window.pin.toolAddress();
     };
 
     var onMouseUp = function (upEvt) {
