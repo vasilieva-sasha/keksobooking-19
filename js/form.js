@@ -4,11 +4,10 @@
   var adForm = document.querySelector('.ad-form');
   var adFormInputs = adForm.querySelectorAll('input, select, textarea, button');
   var adFormInputAddress = adForm.querySelector('input[name=address]');
+  var adFormReset = adForm.querySelector('.ad-form__reset');
 
   var messageErrorTemplate = document.querySelector('#error').content.querySelector('.error');
   var messageSuccessTemplate = document.querySelector('#success').content.querySelector('.success');
-
-  var onToolClick = window.pin.onToolClick;
 
   var onWindowLoad = function (collection) {
     window.onLoad = collection.forEach(function (collectionItem) {
@@ -24,14 +23,16 @@
     adForm.classList.remove('ad-form--disabled');
     adFormInputs.forEach(function (input) {
       input.removeAttribute('disabled', 'disabled');
-      adFormInputAddress.setAttribute('disabled', 'disabled');
+      adFormInputAddress.setAttribute('readonly', true);
     });
     window.validation.check();
   };
 
   var disablePage = function () {
+    window.map.disabled = true;
     var card = document.querySelector('.popup--ad');
     var pins = document.querySelectorAll('.map__pin--card');
+
     pins.forEach(function (pin) {
       pin.remove();
     });
@@ -44,31 +45,40 @@
     adFormInputAddress.value = window.pin.toolAddress();
     window.pin.tool.style.left = '570px';
     window.pin.tool.style.top = '375px';
-    window.pin.tool.addEventListener('mousedown', function (evt) {
-      window.util.isLeftMouseEvent(evt, onToolClick);
-    });
 
-    window.pin.tool.addEventListener('keydown', function (evt) {
-      window.util.isEnterEvent(evt, onToolClick);
-    });
+    // window.pin.tool.addEventListener('mousedown', function (evt) {
+    //   window.util.isLeftMouseEvent(evt, function () {
+    //     window.pin.onToolClick();
+    //   });
+    // });
+
+    // window.pin.tool.addEventListener('keydown', function (evt) {
+    //   window.util.isEnterEvent(evt, function () {
+    //     window.pin.onToolClick();
+    //   });
+    // });
   };
 
   adForm.addEventListener('submit', function (evt) {
-    window.post.upload(new FormData(adForm), function (response) {
-      if (response) {
-        window.post.respond(messageSuccessTemplate, disablePage);
-      } else {
-        window.post.respond(messageErrorTemplate, function () {
-          window.post.close(messageErrorTemplate);
-        });
-      }
-    });
+    window.post.upload(new FormData(adForm), onSuccess, onError);
     evt.preventDefault();
   });
+
+  var onSuccess = function () {
+    window.post.respond(messageSuccessTemplate, disablePage);
+  };
+
+  var onError = function () {
+    window.post.respond(messageErrorTemplate, function () {
+      window.post.close(messageErrorTemplate);
+    });
+  };
 
   adForm.addEventListener('change', function () {
     window.validation.check();
   });
+
+  adFormReset.addEventListener('click', disablePage);
 
   window.pin.tool.addEventListener('mousedown', function (evt) {
     window.util.isLeftMouseEvent(evt, activateForm);

@@ -24,8 +24,8 @@
   var fragment = document.createDocumentFragment();
 
   var onPinMainClick = function () {
-    window.map.block.classList.remove('map--faded');
     mapWithAds.appendChild(fragment);
+    window.map.block.classList.remove('map--faded');
   };
 
   var renderPins = function (adItem) {
@@ -45,13 +45,13 @@
     });
   };
 
-  var onSuccess = function (adverts) {
+  var onSuccessGet = function (adverts) {
     adverts.forEach(function (adItem) {
       appendPins(adItem);
     });
   };
 
-  var onError = function (errorMessage) {
+  var onErrorGet = function (errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center;';
     node.style.position = 'absolute';
@@ -62,7 +62,7 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  window.get(onSuccess, onError);
+  window.get(onSuccessGet, onErrorGet);
 
   pinMain.addEventListener('mousedown', function (evt) {
     window.util.isLeftMouseEvent(evt, onPinMainClick);
@@ -77,15 +77,20 @@
     MAIN_HEIGHT: MAIN_PIN_HEIGHT,
     tool: pinMain,
     append: appendPins,
+
     toolAddress: function () {
       var pinMainX = parseInt(this.tool.style.left, 10) + (MAIN_PIN_WIDTH / 2);
       var pinMainY = parseInt(this.tool.style.top, 10) + MAIN_PIN_HEIGHT;
       return pinMainX + ', ' + pinMainY;
     },
-    onToolClick: function () {
-      window.map.block.classList.remove('map--faded');
-      mapWithAds.appendChild(fragment);
-    }
+
+    // onToolClick: function () {
+    //   if (window.map.block.classList.contains('map--faded')) {
+    //     window.get(onSuccessGet, onErrorGet);
+    //     mapWithAds.appendChild(fragment);
+    //   }
+    //   window.map.block.classList.remove('map--faded');
+    // }
   };
 
 })();

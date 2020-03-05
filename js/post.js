@@ -4,15 +4,35 @@
   var POST = 'POST';
   var URL = 'https://js.dump.academy/keksobooking';
   var TIMEOUT = 10000;
+  var StatusCode = {
+    OK: 200
+  };
   var main = document.querySelector('main');
+  var removeMessage = function (message) {
+    message.remove();
+    document.removeEventListener('keydown', function (evt) {
+      window.util.isEscapeEvent(evt, removeMessage);
+    });
+  };
 
   window.post = {
-    upload: function (data, onSuccess) {
+    upload: function (data, onSuccess, onError) {
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';
 
       xhr.addEventListener('load', function () {
-        onSuccess(xhr.response);
+        if (xhr.status === StatusCode.OK) {
+          onSuccess(xhr.response);
+        } else {
+          onError();
+        }
+      });
+
+      xhr.addEventListener('error', function () {
+        onError();
+      });
+      xhr.addEventListener('timeout', function () {
+        onError();
       });
 
       xhr.timeout = TIMEOUT;
@@ -27,12 +47,12 @@
 
       document.addEventListener('keydown', function (evt) {
         window.util.isEscapeEvent(evt, function () {
-          message.remove();
+          removeMessage(message);
         });
       });
 
       document.addEventListener('click', function () {
-        message.remove();
+        removeMessage(message);
       });
 
       action();
@@ -41,7 +61,13 @@
     close: function (message) {
       var button = message.querySelector('button');
       button.addEventListener('click', function () {
-        message.remove();
+        removeMessage(message);
+      });
+
+      button.addEventListener('keydown', function (evt) {
+        window.util.isEscapeEvent(evt, function () {
+          removeMessage(message);
+        });
       });
     }
   };
