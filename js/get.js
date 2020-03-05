@@ -7,8 +7,23 @@
     OK: 200
   };
   var TIMEOUT = 10000;
+  var onSuccess = function (adverts) {
+    adverts.forEach(function (adItem) {
+      window.pin.appendItem(adItem);
+    });
+  };
+  var onError = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '35px';
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
 
-  window.get = function (onSuccess, onError) {
+  window.get = function () {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 

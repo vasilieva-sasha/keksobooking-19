@@ -45,18 +45,7 @@
     adFormInputAddress.value = window.pin.toolAddress();
     window.pin.tool.style.left = '570px';
     window.pin.tool.style.top = '375px';
-
-    // window.pin.tool.addEventListener('mousedown', function (evt) {
-    //   window.util.isLeftMouseEvent(evt, function () {
-    //     window.pin.onToolClick();
-    //   });
-    // });
-
-    // window.pin.tool.addEventListener('keydown', function (evt) {
-    //   window.util.isEnterEvent(evt, function () {
-    //     window.pin.onToolClick();
-    //   });
-    // });
+    window.get();
   };
 
   adForm.addEventListener('submit', function (evt) {
