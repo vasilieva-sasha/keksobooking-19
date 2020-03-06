@@ -1,13 +1,34 @@
 'use strict';
 
 (function () {
+  var GET = 'GET';
   var URL = 'https://js.dump.academy/keksobooking/data';
-  window.get = function (onSuccess, onError) {
-    var xhr = new this.XMLHttpRequest();
+  var StatusCode = {
+    OK: 200
+  };
+  var TIMEOUT = 10000;
+  var onSuccess = function (adverts) {
+    adverts.forEach(function (adItem) {
+      window.pin.appendItem(adItem);
+    });
+  };
+  var onError = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '35px';
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  window.get = function () {
+    var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === StatusCode.OK) {
         onSuccess(xhr.response);
       } else {
         onError('Ближайшие объявления не загрузились: ' + xhr.status + ' ' + xhr.statusText);
@@ -20,9 +41,9 @@
     xhr.addEventListener('timeout', function () {
       onError('Слишком долгий ответ сервера');
     });
-    xhr.timeout = 10000;
+    xhr.timeout = TIMEOUT;
 
-    xhr.open('GET', URL);
+    xhr.open(GET, URL);
     xhr.send();
 
   };

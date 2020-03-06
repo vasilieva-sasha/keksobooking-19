@@ -1,23 +1,13 @@
 'use strict';
 
 (function () {
-  var FLAT_PRICE = 1000;
-  var HOUSE_PRICE = 5000;
-  var PALACE_PRICE = 10000;
-  var TWELVE_TIME = '12:00';
-  var THIRTEEN_TIME = '13:00';
-  var FOURTEEN_TIME = '14:00';
-
   var adForm = document.querySelector('.ad-form');
   var adFormInputs = adForm.querySelectorAll('input, select, textarea, button');
   var adFormInputAddress = adForm.querySelector('input[name=address]');
-  var adFormSelectRooms = adForm.querySelector('select[name=rooms]');
-  var adFormSelectCapacity = adForm.querySelector('select[name=capacity]');
-  var adFormSelectType = adForm.querySelector('select[name=type]');
-  var adFormInputPrice = adForm.querySelector('input[name=price]');
-  var adFormSelectTimeIn = adForm.querySelector('select[name=timein]');
-  var adFormSelectTimeOut = adForm.querySelector('select[name=timeout]');
-  var adFormOptionsTimeOut = adFormSelectTimeOut.querySelectorAll('option');
+  var adFormReset = adForm.querySelector('.ad-form__reset');
+
+  var messageErrorTemplate = document.querySelector('#error').content.querySelector('.error');
+  var messageSuccessTemplate = document.querySelector('#success').content.querySelector('.success');
 
   var onWindowLoad = function (collection) {
     window.onLoad = collection.forEach(function (collectionItem) {
@@ -27,91 +17,57 @@
 
   onWindowLoad(adFormInputs);
 
-  var checkValidityGuests = function () {
-    if (adFormSelectCapacity.value === '0' && adFormSelectRooms.value !== '100') {
-      adFormSelectCapacity.setCustomValidity('Выберите количество гостей!');
-    } else if (adFormSelectRooms.value === '100' && adFormSelectCapacity.value !== '0') {
-      adFormSelectCapacity.setCustomValidity('Размещение гостей невозможно!');
-    } else if (adFormSelectRooms.value < adFormSelectCapacity.value) {
-      adFormSelectCapacity.setCustomValidity('Слишком много гостей!');
-    } else {
-      adFormSelectCapacity.setCustomValidity('');
-    }
-  };
-
-  var checkValidityPrice = function () {
-    if (adFormSelectType.value === 'bungalo') {
-      adFormInputPrice.setAttribute('placeholder', '0');
-    } else if (adFormSelectType.value === 'flat') {
-      adFormInputPrice.setAttribute('placeholder', FLAT_PRICE);
-      adFormInputPrice.setAttribute('min', FLAT_PRICE);
-    } else if (adFormSelectType.value === 'house') {
-      adFormInputPrice.setAttribute('placeholder', HOUSE_PRICE);
-      adFormInputPrice.setAttribute('min', HOUSE_PRICE);
-    } else if (adFormSelectType.value === 'palace') {
-      adFormInputPrice.setAttribute('placeholder', PALACE_PRICE);
-      adFormInputPrice.setAttribute('min', PALACE_PRICE);
-    }
-  };
-
-  adFormSelectType.addEventListener('change', function () {
-    checkValidityPrice();
-  });
-
-  var setTimeDisabled = function (time) {
-    adFormOptionsTimeOut.forEach(function (option) {
-      option.removeAttribute('disabled', 'disabled');
-    });
-    adFormSelectTimeOut.value = time;
-    adFormOptionsTimeOut.forEach(function (option) {
-      if (option.value !== time) {
-        option.setAttribute('disabled', 'disabled');
-      }
-    });
-  };
-
-  var checkValidityTime = function () {
-    if (adFormSelectTimeIn.value === TWELVE_TIME) {
-      setTimeDisabled(TWELVE_TIME);
-    } else if (adFormSelectTimeIn.value === THIRTEEN_TIME) {
-      setTimeDisabled(THIRTEEN_TIME);
-    } else if (adFormSelectTimeIn.value === FOURTEEN_TIME) {
-      setTimeDisabled(FOURTEEN_TIME);
-    }
-  };
-
-  adFormSelectTimeIn.addEventListener('change', function () {
-    checkValidityTime();
-  });
-
-  adFormSelectTimeOut.addEventListener('change', function () {
-    checkValidityTime();
-  });
-
-  adFormSelectTimeOut.addEventListener('change', function () {
-    checkValidityTime();
-  });
-
-  var checkValidity = function () {
-    checkValidityGuests();
-    checkValidityPrice();
-    checkValidityTime();
-  };
+  adFormInputAddress.value = window.pin.toolAddress();
 
   var activateForm = function () {
     adForm.classList.remove('ad-form--disabled');
     adFormInputs.forEach(function (input) {
       input.removeAttribute('disabled', 'disabled');
-      adFormInputAddress.setAttribute('disabled', 'disabled');
+      adFormInputAddress.setAttribute('readonly', true);
     });
-    checkValidity();
+    window.validation.check();
+  };
+
+  var disablePage = function () {
+    window.map.disabled = true;
+    var card = document.querySelector('.popup--ad');
+    var pins = document.querySelectorAll('.map__pin--card');
+
+    pins.forEach(function (pin) {
+      pin.remove();
+    });
+    if (card) {
+      card.remove();
+    }
+    window.map.block.classList.add('map--faded');
+    adForm.classList.add('ad-form--disabled');
+    adForm.reset();
+    adFormInputAddress.value = window.pin.toolAddress();
+    window.pin.tool.style.left = '570px';
+    window.pin.tool.style.top = '375px';
+    window.get();
+  };
+
+  adForm.addEventListener('submit', function (evt) {
+    window.post.upload(new FormData(adForm), onSuccess, onError);
+    evt.preventDefault();
+  });
+
+  var onSuccess = function () {
+    window.post.respond(messageSuccessTemplate, disablePage);
+  };
+
+  var onError = function () {
+    window.post.respond(messageErrorTemplate, function () {
+      window.post.close(messageErrorTemplate);
+    });
   };
 
   adForm.addEventListener('change', function () {
-    checkValidity();
+    window.validation.check();
   });
 
-  adFormInputAddress.value = window.pin.mainPinAddress;
+  adFormReset.addEventListener('click', disablePage);
 
   window.pin.tool.addEventListener('mousedown', function (evt) {
     window.util.isLeftMouseEvent(evt, activateForm);
@@ -121,4 +77,7 @@
     window.util.isEnterEvent(evt, activateForm);
   });
 
+  window.form = {
+    activate: activateForm
+  };
 })();
