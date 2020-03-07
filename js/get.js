@@ -7,11 +7,8 @@
     OK: 200
   };
   var TIMEOUT = 10000;
-  var onSuccess = function (adverts) {
-    adverts.forEach(function (adItem) {
-      window.pin.appendItem(adItem);
-    });
-  };
+  window.dataLoaded = false;
+
   var onError = function (errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center;';
@@ -23,7 +20,7 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  window.get = function () {
+  window.get = function (onSuccess) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
