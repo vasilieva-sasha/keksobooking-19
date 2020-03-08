@@ -21,6 +21,7 @@
 
   var activateForm = function () {
     adForm.classList.remove('ad-form--disabled');
+    adFormInputAddress.setAttribute('readonly', true);
     adFormInputs.forEach(function (input) {
       input.removeAttribute('disabled', 'disabled');
       adFormInputAddress.setAttribute('readonly', true);
@@ -39,13 +40,21 @@
     if (card) {
       card.remove();
     }
+    window.dataLoaded = false;
     window.map.block.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
     adForm.reset();
     adFormInputAddress.value = window.pin.toolAddress();
+    window.filters.block.reset();
+    window.filters.inputs.forEach(function (filter) {
+      filter.setAttribute('disabled', 'disabled');
+      filter.removeEventListener('change', function () {
+        document.querySelector('.popup--ad').remove();
+      });
+    });
     window.pin.tool.style.left = '570px';
     window.pin.tool.style.top = '375px';
-    window.get();
+    window.pin.get();
   };
 
   adForm.addEventListener('submit', function (evt) {
