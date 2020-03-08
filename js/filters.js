@@ -31,10 +31,14 @@
   };
 
   type.addEventListener('change', function () {
-    var option = type.value;
-    filteredByType = window.offers.filter(function (it) {
-      return it.offer.type === option;
-    });
+    if (type.value === 'any') {
+      filteredByType = window.offers;
+    } else {
+      var option = type.value;
+      filteredByType = window.offers.filter(function (it) {
+        return it.offer.type === option;
+      });
+    }
     updatePins();
   });
 
