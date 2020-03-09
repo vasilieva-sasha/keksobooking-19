@@ -10,18 +10,18 @@
   var messageSuccessTemplate = document.querySelector('#success').content.querySelector('.success');
 
   var onWindowLoad = function (collection) {
-    window.onLoad = collection.forEach(function (collectionItem) {
+    collection.forEach(function (collectionItem) {
       collectionItem.setAttribute('disabled', 'disabled');
     });
+    adFormInputAddress.value = window.pin.toolAddressInactive();
   };
 
-  onWindowLoad(adFormInputs);
-
-  adFormInputAddress.value = window.pin.toolAddress();
+  window.onLoad = onWindowLoad(adFormInputs);
 
   var activateForm = function () {
     adForm.classList.remove('ad-form--disabled');
     adFormInputAddress.setAttribute('readonly', true);
+    adFormInputAddress.value = window.pin.toolAddress();
     adFormInputs.forEach(function (input) {
       input.removeAttribute('disabled', 'disabled');
       adFormInputAddress.setAttribute('readonly', true);
@@ -44,7 +44,6 @@
     window.map.block.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
     adForm.reset();
-    adFormInputAddress.value = window.pin.toolAddress();
     window.filters.block.reset();
     window.filters.inputs.forEach(function (filter) {
       filter.setAttribute('disabled', 'disabled');
@@ -52,8 +51,9 @@
         document.querySelector('.popup--ad').remove();
       });
     });
-    window.pin.tool.style.left = '570px';
-    window.pin.tool.style.top = '375px';
+    window.pin.tool.style.left = window.pin.Main.LEFT + 'px';
+    window.pin.tool.style.top = window.pin.Main.TOP + 'px';
+    adFormInputAddress.value = window.pin.toolAddressInactive();
     window.pin.get();
   };
 
@@ -87,6 +87,7 @@
   });
 
   window.form = {
-    activate: activateForm
+    activate: activateForm,
+    adress: adFormInputAddress
   };
 })();

@@ -41,8 +41,8 @@
         return current;
       };
 
-      var left = checkOffset(window.pin.tool.offsetLeft, window.map.WIDTH_MIN, (window.map.block.offsetWidth - (window.pin.MAIN_WIDTH / 2)), window.pin.MAIN_WIDTH) - shift.x;
-      var top = checkOffset(window.pin.tool.offsetTop, window.map.HEIGHT_MIN, window.map.HEIGHT_MAX, window.pin.MAIN_HEIGHT) - shift.y;
+      var left = checkOffset(window.pin.tool.offsetLeft, window.map.WIDTH_MIN, (window.map.block.offsetWidth - (window.pin.Main.WIDTH / 2)), window.pin.Main.WIDTH) - shift.x;
+      var top = checkOffset(window.pin.tool.offsetTop, window.map.HEIGHT_MIN, window.map.HEIGHT_MAX, window.pin.Main.HEIGHT) - shift.y;
       window.pin.tool.style.top = top + 'px';
       window.pin.tool.style.left = left + 'px';
       adFormInputAddress.value = window.pin.toolAddress();

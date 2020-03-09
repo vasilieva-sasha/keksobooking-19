@@ -2,6 +2,11 @@
 
 (function () {
 
+  var Price = {
+    LOW: 10000,
+    HIGH: 50000
+  };
+
   var filterBlock = document.querySelector('.map__filters');
   var filters = filterBlock.querySelectorAll('input, select');
   var type = filterBlock.querySelector('#housing-type');
@@ -54,15 +59,15 @@
       filteredByPrice = filtered;
     } else if (price.value === 'middle') {
       filteredByPrice = filtered.filter(function (advert) {
-        return (advert.offer.price >= 10000 && advert.offer.price <= 50000);
+        return (advert.offer.price >= Price.LOW && advert.offer.price <= Price.HIGH);
       });
     } else if (price.value === 'low') {
       filteredByPrice = filtered.filter(function (advert) {
-        return advert.offer.price <= 10000;
+        return advert.offer.price <= Price.LOW;
       });
     } else if (price.value === 'high') {
       filteredByPrice = filtered.filter(function (advert) {
-        return advert.offer.price >= 50000;
+        return advert.offer.price >= Price.HIGH;
       });
     }
     filtered = filteredByPrice;
@@ -99,6 +104,7 @@
         return advert.offer.features.includes(filterValue.value);
       });
     });
+
     filtered = filteredByFeatures;
   };
 
@@ -114,13 +120,13 @@
     updatePins();
   });
 
-  function updatePins() {
+  var updatePins = window.debounce(function () {
     filter();
     document.querySelectorAll('.map__pin--card').forEach(function (pin) {
       pin.remove();
     });
     window.showPins(filtered);
-  }
+  });
 
   window.filters = {
     block: filterBlock,

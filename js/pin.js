@@ -1,10 +1,19 @@
 'use strict';
 
 (function () {
-  var PIN_WIDTH = 40;
-  var PIN_HEIGHT = 70;
-  var MAIN_PIN_WIDTH = 62;
-  var MAIN_PIN_HEIGHT = 84;
+
+  var Pin = {
+    WIDTH: 40,
+    HEIGHT: 70
+  };
+
+  var MainPin = {
+    WIDTH: 62,
+    HEIGHT: 84,
+    TOP: 375,
+    LEFT: 570
+  };
+
   var RESULT_AMOUNT = 5;
 
   window.offers = [];
@@ -22,12 +31,12 @@
   window.get(onSuccess);
 
   var getLocationPinX = function (adItem) {
-    var locationPinX = adItem.location.x - (PIN_WIDTH / 2);
+    var locationPinX = adItem.location.x - (Pin.WIDTH / 2);
     return locationPinX + 'px';
   };
 
   var getLocationPinY = function (adItem) {
-    var locationPinY = adItem.location.y - PIN_HEIGHT;
+    var locationPinY = adItem.location.y - Pin.HEIGHT;
     return locationPinY + 'px';
   };
 
@@ -35,7 +44,7 @@
 
   var onPinMainClick = function () {
     window.showPins(window.offers);
-
+    window.filters.block.reset();
     window.map.block.classList.remove('map--faded');
   };
 
@@ -52,15 +61,21 @@
   };
 
   var appendPins = function (adItem) {
-    var pin = fragment.appendChild(renderPins(adItem));
-    pin.addEventListener('click', function () {
-      window.offer.showCard(adItem);
-    });
-    mapWithAds.appendChild(fragment);
+    if ('offer' in adItem) {
+      var pin = fragment.appendChild(renderPins(adItem));
+      pin.addEventListener('click', function () {
+        window.offer.showCard(adItem);
+        var pins = document.querySelectorAll('.map__pin--card');
+        pins.forEach(function (item) {
+          item.classList.remove('map__pin--active');
+        });
+        pin.classList.add('map__pin--active');
+      });
+      mapWithAds.appendChild(fragment);
+    }
   };
 
   window.showPins = function (data) {
-
     var takeNumber = data.length > RESULT_AMOUNT ? RESULT_AMOUNT : data.length;
     for (var i = 0; i < takeNumber; i++) {
       window.pin.appendItem(data[i]);
@@ -76,15 +91,20 @@
   });
 
   window.pin = {
-    MAIN_WIDTH: MAIN_PIN_WIDTH,
-    MAIN_HEIGHT: MAIN_PIN_HEIGHT,
+    Main: MainPin,
     tool: pinMain,
     append: appendPins,
 
     toolAddress: function () {
-      var pinMainX = parseInt(this.tool.style.left, 10) + (MAIN_PIN_WIDTH / 2);
-      var pinMainY = parseInt(this.tool.style.top, 10) + MAIN_PIN_HEIGHT;
+      var pinMainX = parseInt(this.tool.style.left, 10) + (this.Main.WIDTH / 2);
+      var pinMainY = parseInt(this.tool.style.top, 10) + this.Main.HEIGHT;
       return pinMainX + ', ' + pinMainY;
+    },
+
+    toolAddressInactive: function () {
+      var pinMainXInactive = this.Main.LEFT + (this.Main.WIDTH / 2);
+      var pinMainYInactive = this.Main.TOP + (this.Main.HEIGHT / 2);
+      return pinMainXInactive + ', ' + pinMainYInactive;
     },
     appendItem: function (adItem) {
       appendPins(adItem);
