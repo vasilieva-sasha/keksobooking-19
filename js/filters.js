@@ -2,15 +2,12 @@
 
 (function () {
 
-  // PRICE = ['any', 'middle', 'low', 'high'];
-
   var filterBlock = document.querySelector('.map__filters');
   var filters = filterBlock.querySelectorAll('input, select');
   var type = filterBlock.querySelector('#housing-type');
   var price = filterBlock.querySelector('#housing-price');
   var rooms = filterBlock.querySelector('#housing-rooms');
   var guests = filterBlock.querySelector('#housing-guests');
-  var features = filterBlock.querySelectorAll('input[name=features]');
 
   var filteredByType = window.offers;
   var filteredByPrice = [];
@@ -45,8 +42,8 @@
     if (type.value === 'any') {
       filteredByType = window.offers;
     } else {
-      filteredByType = window.offers.filter(function (it) {
-        return it.offer.type === type.value;
+      filteredByType = window.offers.filter(function (advert) {
+        return advert.offer.type === type.value;
       });
     }
     filtered = filteredByType;
@@ -56,16 +53,16 @@
     if (price.value === 'any') {
       filteredByPrice = filtered;
     } else if (price.value === 'middle') {
-      filteredByPrice = filtered.filter(function (it) {
-        return (it.offer.price >= 10000 && it.offer.price <= 50000);
+      filteredByPrice = filtered.filter(function (advert) {
+        return (advert.offer.price >= 10000 && advert.offer.price <= 50000);
       });
     } else if (price.value === 'low') {
-      filteredByPrice = filtered.filter(function (it) {
-        return it.offer.price <= 10000;
+      filteredByPrice = filtered.filter(function (advert) {
+        return advert.offer.price <= 10000;
       });
     } else if (price.value === 'high') {
-      filteredByPrice = filtered.filter(function (it) {
-        return it.offer.price >= 50000;
+      filteredByPrice = filtered.filter(function (advert) {
+        return advert.offer.price >= 50000;
       });
     }
     filtered = filteredByPrice;
@@ -75,8 +72,8 @@
     if (rooms.value === 'any') {
       filteredByRooms = filtered;
     } else {
-      filteredByRooms = filtered.filter(function (it) {
-        return it.offer.rooms === parseInt(rooms.value, 10);
+      filteredByRooms = filtered.filter(function (advert) {
+        return advert.offer.rooms === parseInt(rooms.value, 10);
       });
     }
     filtered = filteredByRooms;
@@ -86,26 +83,22 @@
     if (guests.value === 'any') {
       filteredByGuests = filteredByRooms;
     } else {
-      filteredByGuests = filtered.filter(function (it) {
-        return it.offer.guests === parseInt(guests.value, 10);
+      filteredByGuests = filtered.filter(function (advert) {
+        return advert.offer.guests === parseInt(guests.value, 10);
       });
     }
     filtered = filteredByGuests;
   };
 
   var filterByFeatures = function () {
-    features.forEach(function (checkbox) {
-      if (checkbox.checked) {
-        filteredByFeatures = filtered.filter(function (it) {
-          return it.offer.features.indexOf(checkbox.value) === -1;
-        });
-      } else {
-        filteredByFeatures = filtered.filter(function (it) {
-          return it.offer.features.indexOf(checkbox.value) !== -1;
-        });
-      }
+
+    var checkboxList = Array.from(filterBlock.querySelectorAll('input[type=checkbox]:checked'));
+
+    filteredByFeatures = filtered.filter(function (advert) {
+      return checkboxList.every(function (filterValue) {
+        return advert.offer.features.includes(filterValue.value);
+      });
     });
-    console.log(filteredByFeatures);
     filtered = filteredByFeatures;
   };
 
@@ -117,27 +110,8 @@
     filterByFeatures();
   };
 
-  type.addEventListener('change', function () {
+  filterBlock.addEventListener('change', function () {
     updatePins();
-  });
-
-  price.addEventListener('change', function () {
-    updatePins();
-  });
-
-  rooms.addEventListener('change', function () {
-    updatePins();
-  });
-
-  guests.addEventListener('change', function () {
-    updatePins();
-  });
-
-  features.forEach(function (feature) {
-    feature.addEventListener('change', function () {
-      updatePins();
-    });
-    console.log(filtered);
   });
 
   function updatePins() {
