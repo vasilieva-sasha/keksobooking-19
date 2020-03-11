@@ -42,6 +42,9 @@
         filter.removeAttribute('disabled', 'disabled');
         filter.addEventListener('change', onFilterChange);
       });
+      filterBlock.addEventListener('change', function () {
+        updatePins();
+      });
     }
   };
 
@@ -118,9 +121,6 @@
     filterByFeatures();
   };
 
-  filterBlock.addEventListener('change', function () {
-    updatePins();
-  });
 
   var updatePins = window.debounce(function () {
     filter();
@@ -133,6 +133,7 @@
   window.filters = {
     block: filterBlock,
     inputs: filters,
-    onChange: onFilterChange
+    onChange: onFilterChange,
+    updatePins: updatePins
   };
 })();
