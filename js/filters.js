@@ -13,6 +13,7 @@
   var price = filterBlock.querySelector('#housing-price');
   var rooms = filterBlock.querySelector('#housing-rooms');
   var guests = filterBlock.querySelector('#housing-guests');
+  var card = document.getElementsByClassName('popup--ad');
 
   var filteredByType = window.offers;
   var filteredByPrice = [];
@@ -29,16 +30,17 @@
     window.util.isLeftMouseEvent(evt, filterActivate);
   });
 
+  var onFilterChange = function () {
+    if (card.length > 0) {
+      document.querySelector('.popup--ad').remove();
+    }
+  };
+
   var filterActivate = function () {
-    var card = document.getElementsByClassName('popup--ad');
     if (window.dataLoaded === true) {
       filters.forEach(function (filter) {
         filter.removeAttribute('disabled', 'disabled');
-        filter.addEventListener('change', function () {
-          if (card.length > 0) {
-            document.querySelector('.popup--ad').remove();
-          }
-        });
+        filter.addEventListener('change', onFilterChange);
       });
     }
   };
@@ -130,6 +132,7 @@
 
   window.filters = {
     block: filterBlock,
-    inputs: filters
+    inputs: filters,
+    onChange: onFilterChange
   };
 })();

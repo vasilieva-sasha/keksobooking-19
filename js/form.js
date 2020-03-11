@@ -20,7 +20,6 @@
 
   var activateForm = function () {
     adForm.classList.remove('ad-form--disabled');
-    adFormInputAddress.setAttribute('readonly', true);
     adFormInputAddress.value = window.pin.toolAddress();
     adFormInputs.forEach(function (input) {
       input.removeAttribute('disabled', 'disabled');
@@ -47,13 +46,12 @@
     window.filters.block.reset();
     window.filters.inputs.forEach(function (filter) {
       filter.setAttribute('disabled', 'disabled');
-      filter.removeEventListener('change', function () {
-        document.querySelector('.popup--ad').remove();
-      });
+      filter.removeEventListener('change', window.filters.onChange);
     });
     window.pin.tool.style.left = window.pin.Main.LEFT + 'px';
     window.pin.tool.style.top = window.pin.Main.TOP + 'px';
     adFormInputAddress.value = window.pin.toolAddressInactive();
+    adForm.removeEventListener('submit', window.post.upload);
     window.pin.get();
   };
 
