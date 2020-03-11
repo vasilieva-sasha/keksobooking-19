@@ -10,9 +10,9 @@
   var main = document.querySelector('main');
   var removeMessage = function (message) {
     message.remove();
-    document.removeEventListener('keydown', function (evt) {
-      window.util.isEscapeEvent(evt, removeMessage);
-    });
+    document.removeEventListener('keydown', window.util.isEscapeEvent);
+    document.removeEventListener('keydown', window.util.isEscapeEvent);
+    document.removeEventListener('click', removeMessage);
   };
 
   window.post = {

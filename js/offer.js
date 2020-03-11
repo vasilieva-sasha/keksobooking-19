@@ -92,9 +92,7 @@
 
     var removeCard = function () {
       card.remove();
-      document.removeEventListener('keydown', function (evt) {
-        window.util.isEscapeEvent(evt, removeCard);
-      });
+      document.removeEventListener('keydown', window.util.isEscapeEvent);
     };
 
     return card;
