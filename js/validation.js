@@ -18,9 +18,11 @@
   var adFormOptionsTimeOut = adFormSelectTimeOut.querySelectorAll('option');
 
   var checkValidityGuests = function () {
-    if (adFormSelectCapacity.value === '0' && adFormSelectRooms.value !== '100') {
+    if (adFormSelectCapacity.value === window.offer.GuestsAmount.ZERO &&
+      adFormSelectRooms.value !== window.offer.RoomsAmount.HUNDRED) {
       adFormSelectCapacity.setCustomValidity('Выберите количество гостей!');
-    } else if (adFormSelectRooms.value === '100' && adFormSelectCapacity.value !== '0') {
+    } else if (adFormSelectRooms.value === window.offer.RoomsAmount.HUNDRED &&
+      adFormSelectCapacity.value !== window.offer.GuestsAmount.ZERO) {
       adFormSelectCapacity.setCustomValidity('Размещение гостей невозможно!');
     } else if (adFormSelectRooms.value < adFormSelectCapacity.value) {
       adFormSelectCapacity.setCustomValidity('Слишком много гостей!');
