@@ -52,7 +52,7 @@
       window.photo.fileChooserAvatar.removeEventListener('change', window.photo.onChooserChange);
       window.photo.fileChooserOffer.removeEventListener('change', window.photo.onChooserChange);
       window.form.block.removeEventListener('change', window.validation.check);
-      window.form.block.removeEventListener('submit', window.post.upload);
+      window.form.block.removeEventListener('submit', window.form.onSubmit);
       adFormReset.removeEventListener('click', window.util.disablePage);
       window.pin.get();
     }

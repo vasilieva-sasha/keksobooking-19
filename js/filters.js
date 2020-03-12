@@ -42,9 +42,7 @@
         filter.removeAttribute('disabled', 'disabled');
         filter.addEventListener('change', onFilterChange);
       });
-      filterBlock.addEventListener('change', function () {
-        updatePins();
-      });
+      filterBlock.addEventListener('change', updatePins);
     }
   };
 

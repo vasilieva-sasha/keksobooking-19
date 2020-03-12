@@ -32,14 +32,14 @@
       window.photo.onChooserChange(window.photo.fileChooserOffer, window.photo.previewOfferImage);
     });
     window.validation.check();
-    adForm.addEventListener('change', function () {
-      window.validation.check();
-    });
-    adForm.addEventListener('submit', function (evt) {
-      window.post.upload(new FormData(adForm), onSuccess, onError);
-      evt.preventDefault();
-    });
+    adForm.addEventListener('change', window.validation.check);
+    adForm.addEventListener('submit', onSubmit);
     adFormReset.addEventListener('click', window.util.disablePage);
+  };
+
+  var onSubmit = function (evt) {
+    window.post.upload(new FormData(adForm), onSuccess, onError);
+    evt.preventDefault();
   };
 
   var onSuccess = function () {
@@ -63,6 +63,7 @@
   window.form = {
     activate: activateForm,
     adress: adFormInputAddress,
-    block: adForm
+    block: adForm,
+    onSubmit: onSubmit
   };
 })();
