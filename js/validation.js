@@ -44,9 +44,6 @@
       adFormInputPrice.setAttribute('placeholder', PALACE_PRICE);
       adFormInputPrice.setAttribute('min', PALACE_PRICE);
     }
-    adFormSelectType.addEventListener('change', function () {
-      checkValidityPrice();
-    });
   };
 
   var setTimeDisabled = function (time) {

@@ -25,43 +25,25 @@
       input.removeAttribute('disabled', 'disabled');
       adFormInputAddress.setAttribute('readonly', true);
     });
+    window.photo.fileChooserAvatar.addEventListener('change', function () {
+      window.photo.onChooserChange(window.photo.fileChooserAvatar, window.photo.previewAvatarImage);
+    });
+    window.photo.fileChooserOffer.addEventListener('change', function () {
+      window.photo.onChooserChange(window.photo.fileChooserOffer, window.photo.previewOfferImage);
+    });
     window.validation.check();
+    adForm.addEventListener('change', window.validation.check);
+    adForm.addEventListener('submit', onSubmit);
+    adFormReset.addEventListener('click', window.util.disablePage);
   };
 
-  var disablePage = function () {
-    window.map.disabled = true;
-    var card = document.querySelector('.popup--ad');
-    var pins = document.querySelectorAll('.map__pin--card');
-
-    pins.forEach(function (pin) {
-      pin.remove();
-    });
-    if (card) {
-      card.remove();
-    }
-    window.dataLoaded = false;
-    window.map.block.classList.add('map--faded');
-    adForm.classList.add('ad-form--disabled');
-    adForm.reset();
-    window.filters.block.reset();
-    window.filters.inputs.forEach(function (filter) {
-      filter.setAttribute('disabled', 'disabled');
-      filter.removeEventListener('change', window.filters.onChange);
-    });
-    window.pin.tool.style.left = window.pin.Main.LEFT + 'px';
-    window.pin.tool.style.top = window.pin.Main.TOP + 'px';
-    adFormInputAddress.value = window.pin.toolAddressInactive();
-    adForm.removeEventListener('submit', window.post.upload);
-    window.pin.get();
-  };
-
-  adForm.addEventListener('submit', function (evt) {
+  var onSubmit = function (evt) {
     window.post.upload(new FormData(adForm), onSuccess, onError);
     evt.preventDefault();
-  });
+  };
 
   var onSuccess = function () {
-    window.post.respond(messageSuccessTemplate, disablePage);
+    window.post.respond(messageSuccessTemplate, window.util.disablePage);
   };
 
   var onError = function () {
@@ -69,12 +51,6 @@
       window.post.close(messageErrorTemplate);
     });
   };
-
-  adForm.addEventListener('change', function () {
-    window.validation.check();
-  });
-
-  adFormReset.addEventListener('click', disablePage);
 
   window.pin.tool.addEventListener('mousedown', function (evt) {
     window.util.isLeftMouseEvent(evt, activateForm);
@@ -86,6 +62,8 @@
 
   window.form = {
     activate: activateForm,
-    adress: adFormInputAddress
+    adress: adFormInputAddress,
+    block: adForm,
+    onSubmit: onSubmit
   };
 })();
