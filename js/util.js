@@ -51,7 +51,10 @@
       adFormInputAddress.value = window.pin.toolAddressInactive();
       window.photo.fileChooserAvatar.removeEventListener('change', window.photo.onChooserChange);
       window.photo.fileChooserOffer.removeEventListener('change', window.photo.onChooserChange);
+      window.photo.previewOfferImage.remove();
+      window.photo.previewAvatarImage.src = window.photo.MAFFIN;
       window.form.block.removeEventListener('change', window.validation.check);
+      window.validation.check();
       window.form.block.removeEventListener('submit', window.form.onSubmit);
       adFormReset.removeEventListener('click', window.util.disablePage);
       window.pin.get();

@@ -35,20 +35,20 @@
     if (adFormSelectType.value === 'bungalo') {
       adFormInputPrice.setAttribute('placeholder', '0');
     } else if (adFormSelectType.value === 'flat') {
-      adFormInputPrice.setAttribute('placeholder', FLAT_PRICE);
+      adFormInputPrice.setAttribute('placeholder', FLAT_PRICE.toString());
       adFormInputPrice.setAttribute('min', FLAT_PRICE);
     } else if (adFormSelectType.value === 'house') {
-      adFormInputPrice.setAttribute('placeholder', HOUSE_PRICE);
+      adFormInputPrice.setAttribute('placeholder', HOUSE_PRICE.toString());
       adFormInputPrice.setAttribute('min', HOUSE_PRICE);
     } else if (adFormSelectType.value === 'palace') {
-      adFormInputPrice.setAttribute('placeholder', PALACE_PRICE);
+      adFormInputPrice.setAttribute('placeholder', PALACE_PRICE.toString());
       adFormInputPrice.setAttribute('min', PALACE_PRICE);
     }
   };
 
   var setTimeDisabled = function (time) {
     adFormOptionsTimeOut.forEach(function (option) {
-      option.removeAttribute('disabled', 'disabled');
+      option.removeAttribute('disabled');
     });
     adFormSelectTimeOut.value = time;
     adFormOptionsTimeOut.forEach(function (option) {

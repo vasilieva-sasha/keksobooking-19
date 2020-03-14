@@ -91,7 +91,9 @@
     });
 
     var removeCard = function () {
+      var pin = document.querySelector('.map__pin--active');
       card.remove();
+      pin.classList.remove('map__pin--active');
       document.removeEventListener('keydown', window.util.isEscapeEvent);
     };
 

@@ -3,6 +3,7 @@
 (function () {
 
   var FILE_TYPES = ['.gif', '.jpg', '.jpeg', '.png'];
+  var MAFFIN = 'img/muffin-grey.svg';
 
   var fileChooserAvatar = document.querySelector('.ad-form-header__input');
   var previewAvatar = document.querySelector('.ad-form-header__preview');
@@ -18,6 +19,7 @@
 
 
   window.photo = {
+    MAFFIN: MAFFIN,
     onChooserChange: function (fileChooser, preview) {
       var file = fileChooser.files[0];
       var fileName = file.name.toLowerCase();

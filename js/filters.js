@@ -39,7 +39,7 @@
   var filterActivate = function () {
     if (window.dataLoaded === true) {
       filters.forEach(function (filter) {
-        filter.removeAttribute('disabled', 'disabled');
+        filter.removeAttribute('disabled');
         filter.addEventListener('change', onFilterChange);
       });
       filterBlock.addEventListener('change', updatePins);
@@ -76,26 +76,25 @@
     filtered = filteredByPrice;
   };
 
-  var filterByRooms = function () {
-    if (rooms.value === 'any') {
-      filteredByRooms = filtered;
-    } else {
-      filteredByRooms = filtered.filter(function (advert) {
-        return advert.offer.rooms === parseInt(rooms.value, 10);
-      });
+  var ruleFunctions = {
+    'findRooms': function (advert, input) {
+      return advert.offer.rooms === parseInt(input.value, 10);
+    },
+
+    'findGuests': function (advert, input) {
+      return advert.offer.guests === parseInt(input.value, 10);
     }
-    filtered = filteredByRooms;
   };
 
-  var filterByGuests = function () {
-    if (guests.value === 'any') {
-      filteredByGuests = filteredByRooms;
+  var filterByCapacity = function (input, result, elementName) {
+    if (input.value === 'any') {
+      result = filtered;
     } else {
-      filteredByGuests = filtered.filter(function (advert) {
-        return advert.offer.guests === parseInt(guests.value, 10);
+      result = filtered.filter(function (advert) {
+        return ruleFunctions[elementName](advert, input);
       });
     }
-    filtered = filteredByGuests;
+    filtered = result;
   };
 
   var filterByFeatures = function () {
@@ -114,11 +113,10 @@
   var filter = function () {
     filterByType();
     filterByPrice();
-    filterByRooms();
-    filterByGuests();
+    filterByCapacity(rooms, filteredByRooms, 'findRooms');
+    filterByCapacity(guests, filteredByGuests, 'findGuests');
     filterByFeatures();
   };
-
 
   var updatePins = window.debounce(function () {
     filter();

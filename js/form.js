@@ -22,7 +22,7 @@
     adForm.classList.remove('ad-form--disabled');
     adFormInputAddress.value = window.pin.toolAddress();
     adFormInputs.forEach(function (input) {
-      input.removeAttribute('disabled', 'disabled');
+      input.removeAttribute('disabled');
       adFormInputAddress.setAttribute('readonly', true);
     });
     window.photo.fileChooserAvatar.addEventListener('change', function () {
