@@ -2,6 +2,7 @@
 
 * Студент: [Александра Васильева](https://up.htmlacademy.ru/javascript/19/user/1156713).
 * Наставник: [Артем Зрилов](https://htmlacademy.ru/profile/id1045563).
+* Защищен на 100%
 
 ---
 
